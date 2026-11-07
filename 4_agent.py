@@ -1,0 +1,39 @@
+# A simple agentic workflow, with three tools access uses appropriate tool to showcase the result
+
+from langchain_groq import ChatGroq
+from langchain_core.tools import tool
+import requests
+from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain.agents import create_agent
+from dotenv import load_dotenv
+import os
+
+os.environ['LANGSMITH_AGENT_ID'] = 'agent-observability'
+
+load_dotenv()
+
+search_tool = TavilySearchResults(max_results=2)
+
+@tool
+def get_weather_data(city: str) -> str:
+    """This function fetches the current weather data for a given city"""
+    url = f'https://api.weatherstack.com/current?access_key=f07d9636974c4120025fadf60678771b&query={city}'
+    res = requests.get(url, timeout=5000)
+    return res.json()
+
+llm = ChatGroq(model="openai/gpt-oss-120b")
+
+# Step 2: Create the ReAct agent manually with the pulled prompt
+agent = create_agent(
+    model=llm,
+    tools=[search_tool, get_weather_data],
+    system_prompt="You are a helpful assistant"
+)
+
+# What is the release date of Dhadak 2?
+# What is the current temp of gurgaon
+# Identify the birthplace city of Kalpana Chawla (search) and give its current temperature.
+
+# Step 3: Invoke
+response = agent.invoke({"messages": [{"role": "user", "content": "Identify the birthplace city of Kalpana Chawla (search) and give its current temperature."}]})
+print(response["messages"][-1].content)
