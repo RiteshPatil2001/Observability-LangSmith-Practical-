@@ -128,7 +128,7 @@ HUGGINGFACEHUB_API_TOKEN=""
 TAVILY_API_KEY=""
 
 LANGSMITH_TRACING=true
-LANGSMITH_ENDPOINT="https://api.smith.langchain.com"
+LANGSMITH_ENDPOINT="https://aws.api.smith.langchain.com"
 LANGCHAIN_API_KEY=""
 LANGSMITH_AGENT_ID=""
 LANGSMITH_AGENT_ENVIRONMENT="local"
@@ -229,9 +229,8 @@ This repo includes a **theory PDF** covering the concepts behind observability a
 |---------|-----|
 | `ModuleNotFoundError` | Activate your virtual environment and re-run `pip install -r requirements.txt` |
 | `Invalid API key` errors | Re-check the keys in `.env` and make sure there are no extra spaces or quotes problems |
-| No traces in LangSmith | Confirm `LANGSMITH_TRACING=true` and that `LANGCHAIN_API_KEY` is valid |
+| No traces in LangSmith | Confirm `LANGSMITH_TRACING=true`, check `LANGSMITH_ENDPOINT` from LangSmith and that `LANGCHAIN_API_KEY` is valid |
 | `.env` not loading | Make sure the file is named exactly `.env` and sits in the project root |
-| PowerShell blocks venv activation | Run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`, then activate again |
 
 ---
 
